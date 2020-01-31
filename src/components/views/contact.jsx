@@ -24,16 +24,34 @@ export default class Contact extends Component {
 
 
 	let token = localStorage.getItem("token");
-	axios.defaults.headers.common['Authorization'] = 'J7NQCvgnDXavHeQxf9zR';
+	axios.defaults.headers['moquiSessionToken'] = 'J7NQCvgnDXavHeQxf9zR';
 
-	axios.post(`http://localhost:8080/rest/s1/pop/login`, login)
+
+	let headers = {
+	  'moquiSessionToken': '0_0Wy15gQvw89O1BYjYr'
+	}
+
+	let auth = {
+    	username: 'john.doe',
+    	password: 'moqui'
+	}
+
+
+	axios.post(`http://localhost:8080/rest/s1/pop/login`, login, { headers: headers } )
 	    .then(response => {
 	        console.log(response);
 	        console.log(response.data.moquiSessionToken);
 
-	   axios.defaults.headers.common['Authorization'] = response.data.moquiSessionToken;
+		headers = {
+		  'moquiSessionToken': response.data.moquiSessionToken
+		}
 
-	   axios.post(`http://localhost:8080/rest/s1/mantle/parties/person`, party)
+
+	   //axios.defaults.headers['moquiSessionToken'] = response.data.moquiSessionToken;
+
+	   console.log(axios.defaults.headers);
+
+	   axios.post(`http://localhost:8080/rest/s1/mantle/parties/person`, party, {headers: headers, auth: auth})
 		    .then(response => {
 		        console.log(response);
 		    })

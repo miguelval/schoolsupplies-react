@@ -21,6 +21,7 @@ a:hover { text-decoration: none; }
 .moqui-navbar .moqui-logo { width: 101px; }
 .moqui-logo1 { margin-top: -30px; margin-left: -10px; }
 .navbar-dark .navbar-nav .nav-link { color: white; }
+.navbar-nav div.white-text { color: rgba(255, 255, 255, 0.7); }
 .navbar-title { margin-top: 10px; margin-left: -20px; display: inline-block; font-size: 2em; color: #fff; font-weight: bold; }
 .navbar-pop-title { color: #999999; font-size: 1.1em; display: inline-block; }
 .navbar-pop-subtitle { display: inline-block; font-size: 0.9em; color: #999999; margin-top: -5px; }
@@ -339,3 +340,8 @@ a:hover { text-decoration: none; }
 
 .alert-primary { display: none; }
 
+.alert-primary.show { display: block; }
+
+.cart-quantity { display: none;  }
+
+.product-spinner{ width: 50px; display: none; }

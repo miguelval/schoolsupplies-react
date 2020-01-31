@@ -1,28 +1,76 @@
 import React, { Component } from "react";
 import { browserHistory } from 'react-router';
 import axios from 'axios';
+import $ from "jquery";
 
 export default class Product extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
+		  id: '',
 	      productInfo: [],
 	      productImg: '',
 	      inStock: false,
-	      isVirtual: false
+	      isVirtual: false,
+	      cartInfo: []
 	    }
 	    this.addToCart = this.addToCart.bind(this);
 	}
 
 	addToCart(event) {
 		event.preventDefault();
-		alert('dfsdffds');
+
+		$(".product-spinner").show();
+
+		let token = localStorage.getItem("token");
+
+		let headers = {
+		  'moquiSessionToken': '0_0Wy15gQvw89O1BYjYr'
+		}
+
+		let auth = {
+	    	username: 'john.doe',
+	    	password: 'moqui'
+		}
+
+		axios.post(`http://localhost:8080/rest/s1/pop/cart/add`, {productId: this.state.id} , { headers: headers, auth: auth })
+		    .then(res => {
+		      const cartInfo = res.data;
+		      if(typeof cartInfo.orderItemList !== 'undefined'){
+
+		      	let cartCount = 0;
+		      	cartInfo.orderItemList.map((item, key) => {
+		      		if( item.itemTypeEnumId=='ItemProduct'){
+		      			if(item.quantity != 0){
+			      			console.log("quantity "+ item.quantity);
+			      			cartCount= cartCount + item.quantity;
+		      			}
+		      		}
+		      	});
+
+		      	$('.cart-quantity').html(cartCount);
+		      	$('.cart-quantity').show();
+
+		      	$(".product-spinner").hide();
+		      	$(".alert-primary").show();
+
+
+
+
+		      }
+		      console.log(typeof res.data.orderItemList === 'undefined');
+		      console.log(cartInfo);
+		    })
+
+
 	}
 
 	componentDidMount() {
 
 		const { id } = this.props.params;
+
+		this.setState({ id });
 
 		console.log("id: " + id);
 
@@ -64,7 +112,9 @@ export default class Product extends Component {
 			            <i className="far fa-check-square"></i> You added a {this.state.productInfo.productName} to your shopping cart.
 			            <a className="float-right" href="/store/d#/checkout">Go to Checkout <i className="fas fa-arrow-right"></i></a>
 			        </div>
-
+			        <div className="row d-flex justify-content-center">
+				        <img id="spinner" className="product-spinner" src="/public/images/spinner.gif" />
+				    </div>
 			    <div className="row mt-2">
 			        <div className="col col-lg-1 col-sm-4 col-4">
 			            <div>

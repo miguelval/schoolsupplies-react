@@ -16,7 +16,7 @@ export default class Home extends Component {
   componentDidMount() {
     browserHistory.push('/');
 
-   axios.get(`http://localhost:8080/rest/s1/pop/products/CategoryProducts?productCategoryId=SCHOOL_SUPPLIES`)
+     axios.get(`http://localhost:8080/rest/s1/pop/products/CategoryProducts?productCategoryId=SCHOOL_SUPPLIES`)
         .then(res => {
           const productList = res.data.productList;
           console.log(res.data);
