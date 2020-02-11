@@ -12,9 +12,7 @@ https://demo.moqui.org/toolstatic/lib/swagger-ui/index.html?url=https://demo.moq
 The app uses express and webpack. 
 
 
-/ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/ Example of a basic use of Axios to make REST calls to Moqui.
-/ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/ - -  Example of a basic use of Axios to make REST calls to Moqui. - - /
 
 A moqui session token is needed to make REST calls. A token can be requested from the following URL:
 s
