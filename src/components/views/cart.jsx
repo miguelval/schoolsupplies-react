@@ -19,8 +19,6 @@ export default class Product extends Component {
 
 
 	componentDidMount() {
-
-
 		// set order info 
 		let cartInfo = JSON.parse(localStorage.getItem("cartInfo"));
 
@@ -52,22 +50,6 @@ export default class Product extends Component {
 	    	username: localStorage.getItem("username"),
 	    	password: localStorage.getItem("password")
 		}
-
-		console.log('user: ' + localStorage.getItem("username") + ' ' + localStorage.getItem("password"));
-
-		// axios.post(`http://localhost:8080/rest/moquiSessionToken`, null, {auth: auth} )
-		//     .then(response => {
-		//         console.log("token: ");
-		//         console.log(response);
-
-		// 		headers = {
-		// 		  'moquiSessionToken': response.data
-		// 		}
-		//    })
-		//    .catch(error => {
-		//        console.log(error);
-		//    });
-
 
 		axios.put(`http://localhost:8080/rest/s1/pop/customer/paymentMethods/`, null, {headers: headers, auth: auth} )
 		    .then(response => {

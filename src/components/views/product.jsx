@@ -31,8 +31,6 @@ export default class Product extends Component {
 		else{
 			$(".product-spinner").show();
 
-			let token = localStorage.getItem("token");
-
 			let headers = {
 			  'moquiSessionToken': '0_0Wy15gQvw89O1BYjYr'
 			}
@@ -110,9 +108,6 @@ export default class Product extends Component {
 	}
 
 
-
-
-/* onClick="changeLargeImage('${img.productContentId}');" */
 	render() {
 	    return (
 

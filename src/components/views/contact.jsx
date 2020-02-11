@@ -23,7 +23,6 @@ export default class Contact extends Component {
     party.append('email', formData.get('email')); 
 
 
-	let token = localStorage.getItem("token");
 	axios.defaults.headers['moquiSessionToken'] = 'J7NQCvgnDXavHeQxf9zR';
 
 
@@ -45,9 +44,6 @@ export default class Contact extends Component {
 		headers = {
 		  'moquiSessionToken': response.data.moquiSessionToken
 		}
-
-
-	   //axios.defaults.headers['moquiSessionToken'] = response.data.moquiSessionToken;
 
 	   console.log(axios.defaults.headers);
 
