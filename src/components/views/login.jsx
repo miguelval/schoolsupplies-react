@@ -34,14 +34,22 @@ export default class Login extends Component {
 	    .then(response => {
 	        console.log(response);
 			localStorage.setItem("loggedIn","true");	        
-			localStorage.setItem("username",formData.get('username'));	        
+			localStorage.setItem("username",formData.get('username'));	   
+			localStorage.setItem("password",formData.get('password'));	     
 			localStorage.setItem("userFirstName",response.data.customerInfo["firstName"]);	        
 
-	        console.log(response.data.moquiSessionToken);
+
 	        console.log(localStorage.getItem("loggedIn"));
 
-			browserHistory.push('/');
-			window.location.reload(false);
+	        if(localStorage.getItem("addToCartProductId") !== null){
+				browserHistory.push('/product/'+ localStorage.getItem("addToCartProductId"));
+				window.location.reload(false);  
+	        }
+	        else{
+				browserHistory.push('/');
+				window.location.reload(false);     	
+	        }
+
 	    })
 	    .catch(error => {
 	    	const showLoginError = true;

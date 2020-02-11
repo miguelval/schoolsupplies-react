@@ -12,7 +12,8 @@ export default class App extends Component {
 		this.state = {
 		  cartInfo: [],
 		  isLoggedIn: false,
-		  userFirstName: ''		}
+		  userFirstName: '',
+		  cartQuantity: 0		}
 
 		this.logOut = this.logOut.bind(this);
 	}
@@ -22,6 +23,7 @@ export default class App extends Component {
 		localStorage.setItem("loggedIn","false");	        
 		localStorage.setItem("username","");	        
 		localStorage.setItem("userFirstName","");	 
+		localStorage.removeItem("cartQuantity", 0);
 
 		let isLoggedIn = false;
 		this.setState({ isLoggedIn });
@@ -41,18 +43,19 @@ export default class App extends Component {
 
 			const userFirstName = localStorage.getItem("userFirstName");
 			this.setState({ userFirstName });
-		
-			axios.get(`http://localhost:8080/rest/s1/pop/cart/info`)
-			    .then(res => {
-			      const cartInfo = res.data;
-			      if(typeof cartInfo.orderItemList !== 'undefined'){
-			      	$('.cart-quantity').show();
-			      }
-			      console.log("posdfsfd");
-			      //this.setState({ productList });
-			      //console.log('sdadadadsaasd');
-			      //console.log(this.state.productList);
-			    })
+
+			let headers = {
+			  'moquiSessionToken': '0_0Wy15gQvw89O1BYjYr'
+			}
+			let auth = {
+		    	username: localStorage.getItem("username"),
+		    	password: localStorage.getItem("password")
+			}
+			console.log('cart count: ' + localStorage.getItem("cartQuantity"));
+			if(localStorage.getItem("cartQuantity") !== null){
+				this.setState({cartQuantity: localStorage.getItem("cartQuantity") })
+			}
+
 		}
 		else{
 			const isLoggedIn = false;
@@ -101,8 +104,9 @@ export default class App extends Component {
                 	{ this.state.isLoggedIn ? 
                 		<ul className="navbar-nav ml-auto">
                 			<li className="nav-item">
-		                        <a className="nav-link pointer" data-toggle="modal" data-target="#emptyCartModal" >
-			                        <span className="cart-quantity" id="cart-quantity">
+		                        <a className="nav-link pointer" href="/cart" >
+			                        <span className={ this.state.cartQuantity != 0 ? "cart-quantity show" : "cart-quantity" } id="cart-quantity">
+			                        { this.state.cartQuantity}
 			                        </span>
 			                        <i className="fa fa-shopping-cart"></i>  
 			                        Cart

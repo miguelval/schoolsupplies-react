@@ -21,47 +21,57 @@ export default class Product extends Component {
 	addToCart(event) {
 		event.preventDefault();
 
-		$(".product-spinner").show();
+		let isLoggedIn = localStorage.getItem("loggedIn");
 
-		let token = localStorage.getItem("token");
 
-		let headers = {
-		  'moquiSessionToken': '0_0Wy15gQvw89O1BYjYr'
+		if(isLoggedIn != "true"){
+			localStorage.setItem("addToCartProductId",this.state.id);
+			browserHistory.push('/login');
 		}
+		else{
+			$(".product-spinner").show();
 
-		let auth = {
-	    	username: 'john.doe',
-	    	password: 'moqui'
+			let token = localStorage.getItem("token");
+
+			let headers = {
+			  'moquiSessionToken': '0_0Wy15gQvw89O1BYjYr'
+			}
+
+			let auth = {
+		    	username: localStorage.getItem("username"),
+		    	password: localStorage.getItem("password")
+			}
+
+			axios.post(`http://localhost:8080/rest/s1/pop/cart/add`, {productId: this.state.id} , { headers: headers, auth: auth })
+			    .then(res => {
+			      const cartInfo = res.data;
+
+			      localStorage.setItem("cartInfo", JSON.stringify(cartInfo));
+
+     		      if(typeof cartInfo.orderItemList !== 'undefined'){
+
+			      	let cartCount = 0;
+			      	cartInfo.orderItemList.map((item, key) => {
+			      		if( item.itemTypeEnumId=='ItemProduct'){
+			      			if(item.quantity != 0){
+				      			console.log("quantity "+ item.quantity);
+				      			cartCount= cartCount + item.quantity;
+			      			}
+			      			localStorage.setItem("cartQuantity",cartCount);
+			      		}
+			      	});
+
+			      	$('.cart-quantity').html(cartCount);
+			      	$('.cart-quantity').show();
+
+			      	$(".product-spinner").hide();
+			      	$(".alert-primary").show();
+
+			      }
+			      console.log(typeof res.data.orderItemList === 'undefined');
+			      console.log(cartInfo);
+			    })
 		}
-
-		axios.post(`http://localhost:8080/rest/s1/pop/cart/add`, {productId: this.state.id} , { headers: headers, auth: auth })
-		    .then(res => {
-		      const cartInfo = res.data;
-		      if(typeof cartInfo.orderItemList !== 'undefined'){
-
-		      	let cartCount = 0;
-		      	cartInfo.orderItemList.map((item, key) => {
-		      		if( item.itemTypeEnumId=='ItemProduct'){
-		      			if(item.quantity != 0){
-			      			console.log("quantity "+ item.quantity);
-			      			cartCount= cartCount + item.quantity;
-		      			}
-		      		}
-		      	});
-
-		      	$('.cart-quantity').html(cartCount);
-		      	$('.cart-quantity').show();
-
-		      	$(".product-spinner").hide();
-		      	$(".alert-primary").show();
-
-
-
-
-		      }
-		      console.log(typeof res.data.orderItemList === 'undefined');
-		      console.log(cartInfo);
-		    })
 
 
 	}
@@ -81,7 +91,6 @@ export default class Product extends Component {
 	      const productInfo = res.data;
 	      this.setState({ productInfo });
 
-
 	      const productImg = this.state.productInfo.contentList[0].productContentId;
 	      this.setState({ productImg });
 
@@ -90,8 +99,13 @@ export default class Product extends Component {
 
 	      const productAvailability = true;
 
-	      console.log("here: " +this.state.productInfo.contentList[0].productContentId );
+	      console.log("here: " + this.state.productInfo.contentList[0].productContentId );
 	    });
+
+	    if(localStorage.getItem("addToCartProductId") !== null){
+	    	//this.addToCart();
+	    	localStorage.removeItem("addToCartProductId");
+	    }
 
 	}
 
@@ -110,7 +124,7 @@ export default class Product extends Component {
 			<div className="container container-text mt-1">
 			        <div className="alert alert-primary mt-3 mb-3" role="alert">
 			            <i className="far fa-check-square"></i> You added a {this.state.productInfo.productName} to your shopping cart.
-			            <a className="float-right" href="/store/d#/checkout">Go to Checkout <i className="fas fa-arrow-right"></i></a>
+			            <a className="float-right" href="/cart">Go to Checkout <i className="fas fa-arrow-right"></i></a>
 			        </div>
 			        <div className="row d-flex justify-content-center">
 				        <img id="spinner" className="product-spinner" src="/public/images/spinner.gif" />
