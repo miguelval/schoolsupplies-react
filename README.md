@@ -1,4 +1,4 @@
-# react-about-me
+# school-supplies
 author: [Miguel Valdez]
 
 This is a simple react app that aims to create a simple ecommerce site that exemplifies the connectivity between front end code and backend data to the Moqui framework.
