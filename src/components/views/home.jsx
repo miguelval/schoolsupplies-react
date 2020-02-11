@@ -12,7 +12,6 @@ export default class Home extends Component {
   }
 
 
-
   componentDidMount() {
     browserHistory.push('/');
 
@@ -23,10 +22,7 @@ export default class Home extends Component {
      axios.get(`http://localhost:8080/rest/s1/pop/products/CategoryProducts?productCategoryId=SCHOOL_SUPPLIES`, null, { headers: headers })
         .then(res => {
           const productList = res.data.productList;
-          console.log(res.data);
           this.setState({ productList });
-
-          console.log(this.state.productList);
         })
   }
 
