@@ -24,7 +24,7 @@
     "css-loader": "^0.26.4",
     "express": "^4.17.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "node-sass": "^4.13.1",
     "react": "^15.6.2",
     "react-bootstrap": "^1.0.0-beta.16",
